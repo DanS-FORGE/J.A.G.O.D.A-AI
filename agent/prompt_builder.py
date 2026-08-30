@@ -148,7 +148,7 @@ def _strip_yaml_frontmatter(content: str) -> str:
 # =========================================================================
 
 DEFAULT_AGENT_IDENTITY = (
-    "You are J.A.G.O.D.A, an intelligent AI assistant. "
+    "You are JAGODA, an intelligent AI assistant. "
     "You are helpful, knowledgeable, and direct. You assist users with a wide "
     "range of tasks including answering questions, writing and editing code, "
     "analyzing information, creative work, and executing actions via your tools. "
@@ -158,7 +158,7 @@ DEFAULT_AGENT_IDENTITY = (
 )
 
 HERMES_AGENT_HELP_GUIDANCE = (
-    "You run on J.A.G.O.D.A. When the user needs help with "
+    "You run on JAGODA. When the user needs help with "
     "J.A.G.O.D.A itself — configuring, setting up, using, extending, or troubleshooting "
     "it — or when you need to understand your own features, tools, or capabilities, "
     "the documentation at https://hermes-agent.nousresearch.com/docs is your "
@@ -173,7 +173,7 @@ HERMES_AGENT_HELP_GUIDANCE = (
 # model at skill_view() there would be a dangling reference — the docs URL is
 # the only actionable pointer.
 HERMES_AGENT_HELP_GUIDANCE_NO_SKILLS = (
-    "You run on J.A.G.O.D.A. When the user needs help with "
+    "You run on JAGODA. When the user needs help with "
     "J.A.G.O.D.A itself — configuring, setting up, using, extending, or troubleshooting "
     "it — or when you need to understand your own features, tools, or capabilities, "
     "the documentation at https://hermes-agent.nousresearch.com/docs is the "
