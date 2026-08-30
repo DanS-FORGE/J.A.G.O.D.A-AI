@@ -261,22 +261,22 @@ test('compareApiUrl builds the GitHub compare URL for HTTPS origins', () => {
   assert.equal(
     compareApiUrl({
       currentSha: SHA_A,
-      originUrl: 'https://github.com/NousResearch/hermes-agent.git',
+      originUrl: 'https://github.com/DanS-FORGE/J.A.G.O.D.A-AI.git',
       targetSha: SHA_B
     }),
-    `https://api.github.com/repos/NousResearch/hermes-agent/compare/${SHA_A}...${SHA_B}`
+    `https://api.github.com/repos/DanS-FORGE/J.A.G.O.D.A-AI/compare/${SHA_A}...${SHA_B}`
   )
 })
 
 test('compareApiUrl handles SSH origin forms', () => {
   for (const originUrl of [
-    'git@github.com:NousResearch/hermes-agent.git',
-    'ssh://git@github.com/NousResearch/hermes-agent.git',
-    'git@github.com:NousResearch/hermes-agent'
+    'git@github.com:DanS-FORGE/J.A.G.O.D.A-AI.git',
+    'ssh://git@github.com/DanS-FORGE/J.A.G.O.D.A-AI.git',
+    'git@github.com:DanS-FORGE/J.A.G.O.D.A-AI'
   ]) {
     assert.equal(
       compareApiUrl({ currentSha: SHA_A, originUrl, targetSha: SHA_B }),
-      `https://api.github.com/repos/NousResearch/hermes-agent/compare/${SHA_A}...${SHA_B}`
+      `https://api.github.com/repos/DanS-FORGE/J.A.G.O.D.A-AI/compare/${SHA_A}...${SHA_B}`
     )
   }
 })
