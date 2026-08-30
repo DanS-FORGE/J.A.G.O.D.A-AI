@@ -1978,7 +1978,7 @@ def _update_via_zip(args, *, had_desktop_app_before_update: bool = False) -> boo
         print("  Your existing install was left in place.")
         print(
             "  Re-run `hermes update` to retry; if the agent won't start, "
-            "reinstall from https://hermes-agent.nousresearch.com"
+            "reinstall: iex (irm https://raw.githubusercontent.com/DanS-FORGE/J.A.G.O.D.A-AI/main/scripts/install.ps1)"
         )
         _m().sys.exit(1)
     finally:
@@ -7493,7 +7493,7 @@ def _cmd_update_impl(args, gateway_mode: bool):
         else:
             print("✗ Not a git repository. Please reinstall:")
             print(
-                "  curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash"
+                "  curl -fsSL https://raw.githubusercontent.com/DanS-FORGE/J.A.G.O.D.A-AI/main/scripts/install.sh | bash"
             )
             sys.exit(1)
 
@@ -8398,7 +8398,7 @@ def _cmd_update_impl(args, gateway_mode: bool):
             print(f"  ⚠ {failing_module} still fails to import after updating:")
             print(f"      {import_error}")
             print("    Run `hermes update` again — if it persists, reinstall:")
-            print("    https://hermes-agent.nousresearch.com")
+            print("    https://raw.githubusercontent.com/DanS-FORGE/J.A.G.O.D.A-AI/main/scripts/install.sh")
 
         node_failures = _update_node_dependencies()
         _m()._build_web_ui(_m().PROJECT_ROOT / "web")
