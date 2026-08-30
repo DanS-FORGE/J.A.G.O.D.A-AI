@@ -1541,7 +1541,8 @@ export const ja = defineLocale({
       menuItem: 'リモートホストに接続…',
       badge: (host: string) => `${host} で実行中`,
       title: (profile: string) => `${profile} をリモートホストに接続`,
-      description: 'このプロファイルのセッションは、このパソコンではなく指定したリモートの J.A.G.O.D.A で実行されます。',
+      description:
+        'このプロファイルのセッションは、このパソコンではなく指定したリモートの J.A.G.O.D.A で実行されます。',
       urlLabel: 'リモートアドレス',
       urlPlaceholder: 'https://hermes.example.com',
       urlInvalid: 'http:// または https:// で始まる完全なアドレスを入力してください',
@@ -2241,7 +2242,8 @@ export const ja = defineLocale({
     done: '完了',
     applyingBody:
       'J.A.G.O.D.A アップデーターが独自のウィンドウで引き継ぎ、完了後に自動的に J.A.G.O.D.A を再度開きます。更新中はご自分で J.A.G.O.D.A を開き直さないでください。',
-    applyingBodyBackend: 'リモートバックエンドが更新を適用して再起動します。復帰すると J.A.G.O.D.A が自動的に再接続します。',
+    applyingBodyBackend:
+      'リモートバックエンドが更新を適用して再起動します。復帰すると J.A.G.O.D.A が自動的に再接続します。',
     applyingClose: 'このウィンドウは更新中に閉じ、その後 J.A.G.O.D.A が自動的に再度開きます。',
     errorTitle: '更新が完了しませんでした',
     errorBody: 'ご安心ください。何も失われていません。今すぐ再試行できます。',
@@ -2303,7 +2305,8 @@ export const ja = defineLocale({
     connectExistingDesc:
       'セッショントークンまたはブラウザーサインインでリモートバックエンドを使用します。ローカルインストールは開始されません。',
     installLocalTitle: 'J.A.G.O.D.A をローカルにインストール',
-    installLocalDesc: 'J.A.G.O.D.A をダウンロードし、Python 環境を作成して、このコンピューターでバックエンドを実行します。',
+    installLocalDesc:
+      'J.A.G.O.D.A をダウンロードし、Python 環境を作成して、このコンピューターでバックエンドを実行します。',
     localStartUnavailable:
       'ローカルインストールを開始できません。J.A.G.O.D.A Desktop を再起動して、もう一度お試しください。',
     remoteSetupTitle: '既存の J.A.G.O.D.A に接続',

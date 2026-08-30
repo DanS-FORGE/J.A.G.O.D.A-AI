@@ -28,7 +28,8 @@ const OPTIONS: ModeOption[] = [
   {
     mode: 'lite',
     title: 'Uninstall GUI + agent, keep my data',
-    description: 'Remove the app and the J.A.G.O.D.A agent, but keep config, chats, and secrets for a future reinstall.',
+    description:
+      'Remove the app and the J.A.G.O.D.A agent, but keep config, chats, and secrets for a future reinstall.',
     consequence: 'the Chat GUI and the J.A.G.O.D.A agent (config, chats, and secrets are kept)',
     needsAgent: true
   },
