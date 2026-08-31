@@ -4191,8 +4191,8 @@ function New-DesktopShortcuts {
         }
 
         $targets = @(
-            (Join-Path ([Environment]::GetFolderPath('Programs')) 'Hermes.lnk'),
-            (Join-Path ([Environment]::GetFolderPath('Desktop')) 'Hermes.lnk')
+            (Join-Path ([Environment]::GetFolderPath('Programs')) 'J.A.G.O.D.A.lnk'),
+            (Join-Path ([Environment]::GetFolderPath('Desktop')) 'J.A.G.O.D.A.lnk')
         )
 
         foreach ($lnkPath in $targets) {

@@ -3,10 +3,18 @@
 //! Resolution order:
 //!   1. Dev shortcut: a sibling repo checkout via $HERMES_SETUP_DEV_REPO_ROOT
 //!      env var. Lets devs iterate without re-publishing the script.
-//!   2. Bundled fallback: if the installer was bundled with a script (e.g.
-//!      tauri's `resource` mechanism), serve from there. Not used today.
-//!   3. Network: download from GitHub raw at a pinned commit or branch.
-//!      Commit pins are immutable; branch pins are HEAD-tracking.
+//!   2. Network: download from GitHub raw at a pinned commit or branch.
+//!      Commit pins are immutable; branch pins are HEAD-tracking, so they
+//!      always try the network first to pick up fixes (#67193) rather than
+//!      silently reusing whatever shipped with this build.
+//!   3. Bundled fallback: only reached when step 2 fails outright (no
+//!      network, or a private source repo returning 404 on the anonymous
+//!      raw.githubusercontent.com GET -- see `bundled_script_path`) AND
+//!      there's no usable stale cache. Serves the script embedded in this
+//!      installer via Tauri's `resource` mechanism (tauri.conf.json
+//!      `bundle.resources`), so a fresh install is never hard-blocked
+//!      before the user even reaches install.ps1's own (authenticated,
+//!      git-credential-manager-backed) source checkout.
 //!
 //! Mirrors `apps/desktop/electron/bootstrap-runner.ts`'s `resolveInstallScript`,
 //! but the dev-checkout resolution is driven by an env var rather than the
@@ -15,6 +23,8 @@
 
 use anyhow::{anyhow, Context, Result};
 use std::path::{Path, PathBuf};
+use tauri::path::BaseDirectory;
+use tauri::{AppHandle, Manager};
 use tokio::io::AsyncWriteExt;
 
 use crate::paths;
@@ -93,11 +103,25 @@ pub(crate) fn cache_plan(immutable: bool, cached_exists: bool) -> CachePlan {
     }
 }
 
+/// Path to `scripts/<kind>` bundled into this installer via Tauri's resource
+/// mechanism (tauri.conf.json `bundle.resources`), if it was actually
+/// bundled and exists on disk. `None` in dev builds (no resource dir yet)
+/// or if resolution fails for any reason -- callers treat this as just
+/// another fallback tier, never a hard requirement.
+fn bundled_script_path(app: &AppHandle, kind: ScriptKind) -> Option<PathBuf> {
+    let resolved = app
+        .path()
+        .resolve(format!("scripts/{}", kind.filename()), BaseDirectory::Resource)
+        .ok()?;
+    resolved.exists().then_some(resolved)
+}
+
 /// Resolves the install script to use for this run.
 ///
 /// `pin` is the commit-or-branch from either Hermes-Setup's build-time
 /// constant (compiled into the installer) or a runtime override.
 pub async fn resolve(
+    app: &AppHandle,
     kind: ScriptKind,
     pin: &Pin,
     emit_log: &impl Fn(&str),
@@ -120,9 +144,7 @@ pub async fn resolve(
         }
     }
 
-    // 2. (Not implemented) bundled fallback.
-
-    // 3. Network. Pin must be a real commit or a branch ref.
+    // 2. Network. Pin must be a real commit or a branch ref.
     //
     // Commit SHAs are immutable — permanent cache reuse is safe.
     // Branch/tag pins are moving refs: always try to refresh so "Retry install"
@@ -199,7 +221,30 @@ pub async fn resolve(
                         branch: pin.branch.clone(),
                     })
                 }
-                Err(err) => Err(err),
+                Err(err) => {
+                    // 3. Bundled fallback -- last resort, only reached when
+                    // there is no cache to fall back on either. Covers a
+                    // private source repo (anonymous raw.githubusercontent.com
+                    // GET 404s before install.ps1 ever gets a chance to run
+                    // its own authenticated git checkout) as well as a
+                    // plain offline machine.
+                    match bundled_script_path(app, kind) {
+                        Some(bundled) => {
+                            emit_log(&format!(
+                                "[bootstrap] WARNING: download failed ({err:#}); using {} bundled with this installer at {}",
+                                kind.filename(),
+                                bundled.display()
+                            ));
+                            Ok(ResolvedScript {
+                                path: bundled,
+                                source: ScriptSource::Bundled,
+                                commit: pin.commit.clone(),
+                                branch: pin.branch.clone(),
+                            })
+                        }
+                        None => Err(err),
+                    }
+                }
             }
         }
     }
