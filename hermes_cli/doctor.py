@@ -2031,7 +2031,7 @@ def run_doctor(args):
             soul_path.write_text(
                 "# J.A.G.O.D.A Persona\n\n"
                 "<!-- Edit this file to customize how J.A.G.O.D.A communicates. -->\n\n"
-                "You are J.A.G.O.D.A, a helpful AI assistant.\n",
+                "You are JAGODA, an intelligent AI assistant.\n",
                 encoding="utf-8",
             )
             check_ok(f"Created {_DHH}/SOUL.md with basic template")
